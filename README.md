@@ -1,5 +1,5 @@
 # SimpleRickOnDroid
-Android (Kotlin) for rick and morty api for study purpose only!
+Android (Kotlin) app for rick and morty api for study purpose only!
 
 <p>This project will have:</p>
 <pre>-MVVM pattern;
