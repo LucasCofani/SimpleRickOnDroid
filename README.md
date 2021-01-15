@@ -2,8 +2,7 @@
 Android (Kotlin) for rick and morty api for study purpose only!
 
 <p>This project will have:</p>
-
-<p>-MVVM pattern;</p>
+<pre><p>-MVVM pattern;</p>
 <p>-ROOM for offline database;</p>
 <p>-KOIN for DI;</p>
 <p>-Picasso for images;</p>
@@ -13,6 +12,4 @@ Android (Kotlin) for rick and morty api for study purpose only!
 <p>-Retrofit for API calls;</p>
 <p>-Data Binding;</p>
 <p>-Firebase auth;</p>
-<p>-Firestore.</p>
-
-
+<p>-Firestore.</p></pre>
