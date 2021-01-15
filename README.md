@@ -3,7 +3,7 @@ Android (Kotlin) for rick and morty api for study purpose only!
 
 This project will have:
 
--MVVM pattern;
+<p>-MVVM pattern;</p>
 -ROOM for offline database;
 -KOIN for DI;
 -Picasso for images;
