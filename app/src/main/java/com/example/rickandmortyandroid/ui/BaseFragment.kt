@@ -4,6 +4,8 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import com.example.rickandmortyandroid.R
+import com.google.android.material.snackbar.Snackbar
 
 abstract class BaseFragment : Fragment() {
 
@@ -42,6 +44,6 @@ abstract class BaseFragment : Fragment() {
         mainActivity.resizeFragment()
     }
     protected fun sendMessage(msg :String){
-        Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+        activity?.let { Snackbar.make(it.findViewById(R.id.container),"$msg",Snackbar.LENGTH_LONG).show() }
     }
 }

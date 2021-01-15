@@ -40,7 +40,13 @@ class HomeFragment : BaseFragment() {
             if (it != null)
                 when (it.status) {
                     Status.ERROR -> sendMessage(it.error.toString())
-                    Status.SUCCESS -> adapter.submitList(it.data?.results)
+                    //Status.SUCCESS -> adapter.submitList(it.data?.results)
+                    Status.SUCCESS -> adapter.submitList(
+                        merge(
+                            adapter.currentList,
+                            it.data?.results!!
+                        )
+                    )
                     Status.LOADING -> sendMessage(it.error ?: "Carregando")
                 }
         })
@@ -48,5 +54,12 @@ class HomeFragment : BaseFragment() {
         binding.btnGetchar.setOnClickListener {
             viewModel.getAll()
         }
+    }
+
+    fun <T> merge(first: List<T>, second: List<T>): List<T> {
+        val list: MutableList<T> = ArrayList()
+        list.addAll(first!!)
+        list.addAll(second!!)
+        return list
     }
 }

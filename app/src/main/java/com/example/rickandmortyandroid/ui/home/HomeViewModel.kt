@@ -17,7 +17,6 @@ import kotlinx.coroutines.launch
 class HomeViewModel(private val repository: CharRepository) : ViewModel() {
     private var page = 1
     val chars = MutableLiveData<ResponseWrapper<CharWrapper>>()
-//    val chars = _chars as LiveData<ResponseWrapper<CharWrapper>>
 
     init {
         //deixei aqui o carregamento inicial pois no fragment da erro por conta do ciclo de vida bugado
