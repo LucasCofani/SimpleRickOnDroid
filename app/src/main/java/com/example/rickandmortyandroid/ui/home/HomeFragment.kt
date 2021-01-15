@@ -41,7 +41,7 @@ class HomeFragment : BaseFragment() {
                 when (it.status) {
                     Status.ERROR -> sendMessage(it.error.toString())
                     Status.SUCCESS -> adapter.submitList(it.data?.results)
-                    Status.LOADING -> sendMessage("carregando")
+                    Status.LOADING -> sendMessage(it.error ?: "Carregando")
                 }
         })
 

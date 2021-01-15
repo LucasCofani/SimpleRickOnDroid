@@ -16,8 +16,8 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: CharRepository) : ViewModel() {
     private var page = 1
-    val _chars = MutableLiveData<ResponseWrapper<CharWrapper>>()
-    val chars = _chars as LiveData<ResponseWrapper<CharWrapper>>
+    val chars = MutableLiveData<ResponseWrapper<CharWrapper>>()
+//    val chars = _chars as LiveData<ResponseWrapper<CharWrapper>>
 
     init {
         //deixei aqui o carregamento inicial pois no fragment da erro por conta do ciclo de vida bugado
@@ -28,16 +28,18 @@ class HomeViewModel(private val repository: CharRepository) : ViewModel() {
         viewModelScope.launch {
             // verifica o status de loading, se estiver carregando n permite executar outra
             // requisicao
-            if ((_chars.value?.status ?: Status.SUCCESS) != Status.LOADING)
+            if ((chars.value?.status ?: Status.SUCCESS) != Status.LOADING)
 
                 repository.getAll(page)
                     // catch é um try catch simplificado das funcoes flow
-                    .catch { cause -> Log.i("teste", "${cause}") }
+                    .catch { cause ->
+                        Log.i("teste", "${cause}")
+                    }
                     // o collect ele fica monitorando cada emit enviado pela funcao
                     // a cada emit novo iremos substituir o valor do chars e assim
                     // atualizar nossa tela inicial
                     .collect {
-                        _chars.value = (it)
+                        chars.value = (it)
                     }
             else
                 Log.i("teste", "Aguarde a requisicao anteriora terminar!")

@@ -31,30 +31,35 @@ open class CharRepository(
         }
     }
 
-    private suspend fun getCharDao(page: Int): ResponseWrapper<CharWrapper> {
+    private fun getCharDao(page: Int): Flow<ResponseWrapper<CharWrapper>> = flow {
+        emit(ResponseWrapper<CharWrapper>(Status.LOADING, null, "Carregando banco de dados"))
         // pega a pagina 1 do room caso tenha
         val chars = charDao.getPage(page)
 
-        return if (chars.size == 20)
-            ResponseWrapper<CharWrapper>(Status.SUCCESS, CharWrapper(null, chars))
+        if (chars.size == 20)
+            emit(ResponseWrapper<CharWrapper>(Status.SUCCESS, CharWrapper(null, chars)))
         else
         //se n tiver retorna erro
-            ResponseWrapper<CharWrapper>(Status.ERROR, null, "Pegar da API")
-    }
+            emit(ResponseWrapper<CharWrapper>(Status.ERROR, null, "Pegar da API"))
+    }.flowOn(Dispatchers.Default)
 
-    private suspend fun getChar(page: Int): ResponseWrapper<CharWrapper> {
-        var response = ResponseWrapper<CharWrapper>(Status.LOADING, null)
+    private fun getChar(page: Int): Flow<ResponseWrapper<CharWrapper>> = flow {
+        var response = ResponseWrapper<CharWrapper>(Status.LOADING, null, "Carregando personagens")
+        emit(response)
         val char = getCharDao(page)
-        if (char.status == Status.SUCCESS)
-            response = char
-        else {
-            response = getCharAPI(page)
-            if (response.status == Status.SUCCESS)
-                // adiciona no banco de dados o resultado da api
-                response.data?.let { addCharDao(it.results) }
+        char.collect {
+            when (it.status) {
+                Status.ERROR -> {
+                    response = getCharAPI(page)
+                    if (response.status == Status.SUCCESS)
+                    // adiciona no banco de dados o resultado da api
+                        response.data?.let { addCharDao(it.results) }
+                    emit(response)
+                }
+                else -> emit(it)
+            }
         }
-        return response
-    }
+    }.flowOn(Dispatchers.Default)
 
     private suspend fun addCharDao(charList: List<Character>) {
         charList.forEach { char ->
@@ -65,17 +70,16 @@ open class CharRepository(
     // função do flow é parecida com o suspend, mas ela permite mais coisas e uma delas
     // é a possibilidade de retornar valor mais de uma vez por função
     // o emit seria um return porem podemos aplica-lo varias vezes
-    fun getAll(page: Int) = flow {
+    fun getAll(page: Int) : Flow<ResponseWrapper<CharWrapper>> = flow {
         var res: ResponseWrapper<CharWrapper> = ResponseWrapper(Status.LOADING, null)
         //irá retornar o processo de load
         emit(res)
 
         //simular tempo de carregar da api
         //kotlinx.coroutines.delay(5000)
-
-        res = getChar(page)
-        // ira retornar o resultado da api ou o erro
-        emit(res)
+        getChar(page).collect {
+            emit(it)
+        }
 
         // flowOn especifiva em qual thread vai rodar
     }.flowOn(Dispatchers.Default)
