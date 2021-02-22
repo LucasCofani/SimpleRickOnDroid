@@ -4,9 +4,8 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.rickandmortyandroid.models.data.CharWrapper
 import com.example.rickandmortyandroid.models.ResponseWrapper
-import com.example.rickandmortyandroid.models.Status
+import com.example.rickandmortyandroid.models.data.Character
 import com.example.rickandmortyandroid.repository.CharRepository
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
@@ -15,30 +14,22 @@ import kotlinx.coroutines.launch
 
 class HomeViewModel(private val repository: CharRepository) : ViewModel() {
     private var page = 1
-    val chars = MutableLiveData<ResponseWrapper<CharWrapper>>()
+    val chars = MutableLiveData<ResponseWrapper<List<Character>>>()
 
     init {
-        //deixei aqui o carregamento inicial pois no fragment da erro por conta do ciclo de vida bugado
         getAll()
     }
 
     fun getAll() {
         viewModelScope.launch {
-            // verifica o status de loading, se estiver carregando n permite executar outra
-            // requisicao
-            if ((chars.value?.status ?: Status.SUCCESS) != Status.LOADING)
-
+            if ((chars.value?.status ?: ResponseWrapper.Status.SUCCESS) != ResponseWrapper.Status.LOADING)
                 repository.getAll(page)
-                    // catch é um try catch simplificado das funcoes flow
-                    .catch { cause ->
-                        Log.i("teste", "${cause}")
-                    }
-                    // o collect ele fica monitorando cada emit enviado pela funcao
-                    // a cada emit novo iremos substituir o valor do chars e assim
-                    // atualizar nossa tela inicial
-                    .collect {
-                        chars.value = (it)
-                    }
+                        .catch { cause ->
+                            Log.i("teste", "${cause}")
+                        }
+                        .collect {
+                            chars.value = (it)
+                        }
             else
                 Log.i("teste", "Aguarde a requisicao anteriora terminar!")
         }

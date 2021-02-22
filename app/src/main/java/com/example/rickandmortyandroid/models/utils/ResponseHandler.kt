@@ -3,27 +3,37 @@ package com.example.rickandmortyandroid.models
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 
-enum class ErrorCodes(val code: Int) {
-    //para identificar erro internet sem conexão/lenta/DoS
-    SocketTimeOut(-1)
-}
 open class ResponseHandler {
-    //retorna informação caso nao tenha nenhum erro
+    enum class ErrorCodes(val code: Int) {
+
+        SocketTimeOut(-1)
+    }
+
     fun <T : Any> handleSuccess(data: T): ResponseWrapper<T> {
         return ResponseWrapper.success(data)
     }
 
+
+    fun <T : Any> handleLoading(msg: String, data: T? = null): ResponseWrapper<T> {
+        return ResponseWrapper.loading(msg, data)
+    }
+    fun <T : Any> handleLoading(data: T? = null): ResponseWrapper<T> {
+        return ResponseWrapper.loading(data=data)
+    }
+
     fun <T : Any> handleException(e: Exception): ResponseWrapper<T> {
-        //verifica qual erro deu e de acordo com o erro retorno uma mensagem
         return when (e) {
-            //pega os codigos padroes http e retorna
-            is HttpException -> ResponseWrapper.error(getErrorMessage(e.code()), null)
-            //erro de internet
-            is SocketTimeoutException -> ResponseWrapper.error(getErrorMessage(ErrorCodes.SocketTimeOut.code), null)
-            //caso seja um erro diferente informa o erro direto do exception
-            else -> ResponseWrapper.error(e.message.toString(), null)
+            is HttpException -> ResponseWrapper.error(getErrorMessage(e.code()))
+            is SocketTimeoutException -> ResponseWrapper.error(
+                    getErrorMessage(ErrorCodes.SocketTimeOut.code)
+            )
+            else -> ResponseWrapper.error(e.message.toString())
         }
     }
+    fun <T : Any> handleException(msg: String): ResponseWrapper<T> {
+        return ResponseWrapper.error(msg)
+    }
+
 
     private fun getErrorMessage(code: Int): String {
         return when (code) {

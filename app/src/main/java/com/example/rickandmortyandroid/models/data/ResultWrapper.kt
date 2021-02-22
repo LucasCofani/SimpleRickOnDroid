@@ -1,6 +1,6 @@
 package com.example.rickandmortyandroid.models.data
 
-data class CharWrapper(
+data class ResultWrapper<T>(
         val info : Info?,
-        val results : List<Character>
+        val results : List<T>
 )
