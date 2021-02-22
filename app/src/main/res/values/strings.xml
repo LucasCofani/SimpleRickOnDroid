@@ -5,5 +5,6 @@
     <string name="charac">Character</string>
     <string name="episode">Episode</string>
     <string name="location">Location</string>
-    <string name="fav">Favorites</string>
+    <string name="fav">favorite</string>
+    <string name="about">Sobre</string>
 </resources>

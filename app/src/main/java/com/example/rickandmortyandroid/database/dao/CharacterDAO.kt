@@ -1,7 +1,7 @@
 package com.example.rickandmortyandroid.database.dao
 
 import androidx.room.*
-import com.example.rickandmortyandroid.models.Character
+import com.example.rickandmortyandroid.models.data.Character
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.distinctUntilChanged
 

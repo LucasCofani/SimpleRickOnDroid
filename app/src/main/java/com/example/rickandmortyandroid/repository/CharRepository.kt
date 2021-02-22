@@ -1,19 +1,14 @@
 package com.example.rickandmortyandroid.repository
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
 import com.example.rickandmortyandroid.database.dao.CharacterDAO
-import com.example.rickandmortyandroid.models.CharWrapper
-import com.example.rickandmortyandroid.models.Character
+import com.example.rickandmortyandroid.models.data.CharWrapper
+import com.example.rickandmortyandroid.models.data.Character
 import com.example.rickandmortyandroid.models.ResponseHandler
 import com.example.rickandmortyandroid.models.ResponseWrapper
 import com.example.rickandmortyandroid.models.Status
 import com.example.rickandmortyandroid.retrofit.CharacterService
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
-import kotlinx.coroutines.launch
 
 
 open class CharRepository(

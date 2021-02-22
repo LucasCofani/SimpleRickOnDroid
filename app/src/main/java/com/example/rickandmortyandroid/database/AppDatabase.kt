@@ -4,7 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.rickandmortyandroid.database.dao.CharacterDAO
-import com.example.rickandmortyandroid.models.Character
+import com.example.rickandmortyandroid.models.data.Character
 
 @Database(
     version = 1,

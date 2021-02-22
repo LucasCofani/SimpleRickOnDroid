@@ -1,11 +1,10 @@
 package com.example.rickandmortyandroid.ui.home
 
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.rickandmortyandroid.models.CharWrapper
+import com.example.rickandmortyandroid.models.data.CharWrapper
 import com.example.rickandmortyandroid.models.ResponseWrapper
 import com.example.rickandmortyandroid.models.Status
 import com.example.rickandmortyandroid.repository.CharRepository

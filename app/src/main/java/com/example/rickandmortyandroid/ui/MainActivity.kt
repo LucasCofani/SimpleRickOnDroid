@@ -106,18 +106,6 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun setNavDrawerVisibility(menuItem: MenuItems) {
-
-        navView.menu.forEach { item ->
-            when (item.title.toString().toLowerCase()) {
-                "character" -> item.isVisible = menuItem.chars
-                "episode" -> item.isVisible = menuItem.episode
-                "location" -> item.isVisible = menuItem.location
-
-            }
-        }
-    }
-
     fun resizeFragment() {
         // Resize navhost de acordo com os outros elementos
         val view: View? = navHostFragment.view?.parent as ViewGroup

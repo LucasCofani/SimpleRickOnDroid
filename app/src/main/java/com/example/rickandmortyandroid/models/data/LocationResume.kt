@@ -1,4 +1,4 @@
-package com.example.rickandmortyandroid.models
+package com.example.rickandmortyandroid.models.data
 
 import java.io.Serializable
 

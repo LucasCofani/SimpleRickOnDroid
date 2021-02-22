@@ -1,7 +1,7 @@
 package com.example.rickandmortyandroid.retrofit
 
 
-import com.example.rickandmortyandroid.models.CharWrapper
+import com.example.rickandmortyandroid.models.data.CharWrapper
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

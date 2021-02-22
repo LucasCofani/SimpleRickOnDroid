@@ -10,7 +10,6 @@ import com.example.rickandmortyandroid.ui.MenuItems
 
 
 class EpisodeFragment : BaseFragment() {
-    override var menuItemVisibility = MenuItems(chars = true, episode = false, location = true)
 
     private var _binding: FragmentEpisodeBinding? = null
     private val binding get() = _binding!!
