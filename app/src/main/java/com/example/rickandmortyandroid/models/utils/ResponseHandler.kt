@@ -1,5 +1,6 @@
 package com.example.rickandmortyandroid.models
 
+import com.example.rickandmortyandroid.models.data.Character
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
 
@@ -65,4 +66,6 @@ open class ResponseHandler {
             else -> "Something went wrong"
         }
     }
+
+
 }

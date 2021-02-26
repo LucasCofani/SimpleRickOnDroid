@@ -3,6 +3,7 @@ package com.example.rickandmortyandroid.retrofit
 
 import com.example.rickandmortyandroid.models.data.Character
 import com.example.rickandmortyandroid.models.data.ResultWrapper
+import kotlinx.coroutines.flow.Flow
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query

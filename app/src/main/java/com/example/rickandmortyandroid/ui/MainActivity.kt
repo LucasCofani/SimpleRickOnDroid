@@ -1,6 +1,5 @@
 package com.example.rickandmortyandroid.ui
 
-import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -10,8 +9,6 @@ import android.view.ViewGroup
 import android.widget.RelativeLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.core.view.forEach
-import androidx.core.view.get
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -22,11 +19,6 @@ import com.example.rickandmortyandroid.R
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationView
-import java.lang.Exception
-import java.util.*
-
-
-data class MenuItems(val chars: Boolean, val episode: Boolean, val location: Boolean)
 
 
 class MainActivity : AppCompatActivity() {
@@ -49,7 +41,7 @@ class MainActivity : AppCompatActivity() {
         val drawerLayout: DrawerLayout = findViewById(R.id.drawer_layout)
 
         navHostFragment =
-            supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
+                supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment
 
         navView = findViewById(R.id.nav_view)
         navBottomView = findViewById(R.id.nav_bottom_view)
@@ -57,12 +49,12 @@ class MainActivity : AppCompatActivity() {
         toolbarLayout = findViewById<AppBarLayout>(R.id.toolbar_layout)
         navController = navHostFragment.navController
         appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.homeFragment,
-                R.id.episodeFragment,
-                R.id.locationFragment,
-                R.id.splashFragment
-            ), drawerLayout
+                setOf(
+                        R.id.homeFragment,
+                        R.id.episodeFragment,
+                        R.id.locationFragment,
+                        R.id.splashFragment
+                ), drawerLayout
         )
         // aparecer o icone de estrela
         setSupportActionBar(toolbar)
@@ -111,8 +103,8 @@ class MainActivity : AppCompatActivity() {
         val view: View? = navHostFragment.view?.parent as ViewGroup
 
         val params: RelativeLayout.LayoutParams = RelativeLayout.LayoutParams(
-            RelativeLayout.LayoutParams.MATCH_PARENT,
-            RelativeLayout.LayoutParams.MATCH_PARENT
+                RelativeLayout.LayoutParams.MATCH_PARENT,
+                RelativeLayout.LayoutParams.MATCH_PARENT
         )
 
         if (toolbarLayout.visibility == View.VISIBLE) {

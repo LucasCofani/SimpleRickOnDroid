@@ -8,6 +8,8 @@ import com.example.rickandmortyandroid.repository.CharRepository
 import com.example.rickandmortyandroid.retrofit.CharacterService
 import com.example.rickandmortyandroid.ui.home.HomeViewModel
 import com.squareup.picasso.Picasso
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -24,7 +26,7 @@ private const val BASE_URL = "https://rickandmortyapi.com/api/"
 
 //private const val BASE_URL = "https://gateway.marvel.com/v1/public/"
 
-val RetrofitModule = module {
+val retrofitModule = module {
     fun provideRetrofit(): Retrofit {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
@@ -37,25 +39,26 @@ val RetrofitModule = module {
 
     single<Retrofit> { provideRetrofit() }
     single<CharacterService> { provideCharApi(get()) }
-    single<ResponseHandler> { ResponseHandler() }
-    single<CharRepository> { CharRepository(get(), get(), get()) }
+
 
 }
 
-
-val PicassoModule = module {
+val appModules = module{
+    single<ResponseHandler> { ResponseHandler() }
+    single<CharRepository> { CharRepository(get(), get(), get(),get()) }
     factory<Picasso> {
         Picasso.get()
     }
+    single<CoroutineDispatcher> { Dispatchers.Default }
 }
 
 val viewModelModules = module {
     viewModel {
-        HomeViewModel(get())
+        HomeViewModel(get(),get())
     }
 }
 
-val RoomModules = module {
+val roomModules = module {
     single<AppDatabase> {
         Room.databaseBuilder(
             get(),

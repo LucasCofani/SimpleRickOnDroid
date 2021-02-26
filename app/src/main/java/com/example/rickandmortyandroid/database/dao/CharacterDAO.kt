@@ -11,9 +11,8 @@ interface CharacterDAO {
     @Query("SELECT * FROM Character")
     fun getAll(): Flow<List<Character>>
 
-
     @Query("SELECT * FROM Character WHERE id <= :page*20 and id > (:page*20 -20)")
-    suspend fun getPage(page: Int): List<Character>
+    fun getPage(page: Int): Flow<List<Character>>
 
     @Query("SELECT * FROM Character WHERE id = :id")
     fun getById(id: Long): Flow<Character>

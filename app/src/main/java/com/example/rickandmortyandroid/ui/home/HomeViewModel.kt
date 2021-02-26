@@ -1,38 +1,55 @@
 package com.example.rickandmortyandroid.ui.home
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import com.example.rickandmortyandroid.models.ResponseHandler
 import com.example.rickandmortyandroid.models.ResponseWrapper
 import com.example.rickandmortyandroid.models.data.Character
 import com.example.rickandmortyandroid.repository.CharRepository
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.*
 
 
-class HomeViewModel(private val repository: CharRepository) : ViewModel() {
+class HomeViewModel(
+    private val repository: CharRepository,
+    private val responseHandler: ResponseHandler
+) : ViewModel() {
     private var page = 1
-    val chars = MutableLiveData<ResponseWrapper<List<Character>>>()
+    private var offline = false
+    private val _chars = MutableLiveData<ResponseWrapper<List<Character>>>()
+
+    val chars: LiveData<ResponseWrapper<List<Character>>> = _chars
+
 
     init {
         getAll()
     }
 
     fun getAll() {
-        viewModelScope.launch {
-            if ((chars.value?.status ?: ResponseWrapper.Status.SUCCESS) != ResponseWrapper.Status.LOADING)
-                repository.getAll(page)
-                        .catch { cause ->
-                            Log.i("teste", "${cause}")
-                        }
-                        .collect {
-                            chars.value = (it)
-                        }
-            else
-                Log.i("teste", "Aguarde a requisicao anteriora terminar!")
-        }
-        page++
+        repository.getCharAPI(page)
+            .onEach {
+                if (it.status != ResponseWrapper.Status.ERROR) {
+                    _chars.value = it
+                    page++
+                    offline = false
+                } else {
+                    getAllOffline()
+                    if (!offline) {
+                        _chars.value =
+                            responseHandler.handleException("Please check your connection! Getting data from cache...")
+                        offline = true
+                    }
+                }
+            }
+            .launchIn(viewModelScope)
+    }
+    private fun getAllOffline(){
+        repository.getCharDao(page)
+            .onEach {
+                if (it.status != ResponseWrapper.Status.ERROR) {
+                    _chars.value = it
+                    page++
+                }else
+                    _chars.value = it
+            }
+            .launchIn(viewModelScope)
     }
 }

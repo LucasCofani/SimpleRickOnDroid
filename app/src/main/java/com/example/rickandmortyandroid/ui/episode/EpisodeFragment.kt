@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.rickandmortyandroid.databinding.FragmentEpisodeBinding
 import com.example.rickandmortyandroid.ui.BaseFragment
-import com.example.rickandmortyandroid.ui.MenuItems
 
 
 class EpisodeFragment : BaseFragment() {
