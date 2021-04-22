@@ -2,14 +2,11 @@
 Android (Kotlin) app for rick and morty api for study purpose only!
 
 <p>This project will have:</p>
-<pre>-MVVM pattern;
+<pre>-All layout using android compose!;
 -ROOM for offline database;
--KOIN for DI;
--Picasso for images;
+-HILT for DI;
+-Glide for images;
 -Async calls (Flow/coroutines/LiveData);
--Recycleviews;
--Navigation (and NavArgs);
 -Retrofit for API calls;
--Data Binding;
 -Firebase auth;
 -Firestore.</pre>
