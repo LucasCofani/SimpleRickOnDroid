@@ -13,6 +13,7 @@ sealed class Screen(
     val icon: @Composable () -> Unit = {}
 ) {
     object Splash : Screen("splash", "splash")
+    object CharDetail : Screen("charsDetail", "charsDetail")
 
     object CharList : Screen("charList", "Characters",
         { Icon(Icons.Filled.Person, contentDescription = "") })

@@ -11,7 +11,7 @@ interface RickMortyAPIService {
     @GET("character/{id}")
     suspend fun getChar(
         @Path("id") id : Int
-    ): ResultWrapper<CharacterDto>
+    ): CharacterDto
 
     @GET("character")
     suspend fun searchChar(

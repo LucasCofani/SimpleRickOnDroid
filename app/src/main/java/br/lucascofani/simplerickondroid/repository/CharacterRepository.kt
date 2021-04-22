@@ -14,7 +14,8 @@ class CharacterRepository(
     private val api: RickMortyAPIService,
     private val mapper: CharacterDtoMapper,
 ) {
-    fun execute(
+    // get list of chars
+    fun getChars(
         page: Int,
         query: String,
     ): Flow<DataState<List<Character>>> = flow {
@@ -45,6 +46,31 @@ class CharacterRepository(
                 p = page,
                 name = query,
             ).results
+        )
+    }
+
+    // get single char info per Id
+    fun getChar(
+        charId: Int,
+    ): Flow<DataState<Character>> = flow {
+        try {
+            emit(DataState.loading())
+            delay(1000)
+
+            val chars = getCharFromNetwork(charId)
+
+            emit(DataState.success(chars))
+            Log.i(TAG, "execute: $chars")
+        } catch (e: Exception) {
+            emit(DataState.error<Character>(e.message ?: "Unknown Error"))
+        }
+    }
+
+    private suspend fun getCharFromNetwork(
+        charId: Int
+    ): Character {
+        return mapper.mapToDomainModel(
+            api.getChar(charId)
         )
     }
 }

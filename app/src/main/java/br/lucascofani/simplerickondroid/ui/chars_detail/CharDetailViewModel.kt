@@ -1,4 +1,4 @@
-package br.lucascofani.simplerickondroid.ui.chars_list
+package br.lucascofani.simplerickondroid.ui.chars_detail
 
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -15,35 +15,29 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-const val STATE_KEY_QUERY = "char.state.query.key"
+const val STATE_KEY_CHAR_ID = "char.state.char.id"
 
 @HiltViewModel
-class CharListViewModel
+class CharDetailViewModel
 @Inject
 constructor(
     private val repo: CharacterRepository,
     private val savedStateHandle: SavedStateHandle,
 ) : ViewModel() {
-
-    val charsList: MutableState<List<Character>> = mutableStateOf(ArrayList())
-
-    val query = mutableStateOf("")
+    val charInfo: MutableState<Character?> = mutableStateOf(null)
 
     val loading = mutableStateOf(false)
 
-    val page = mutableStateOf(1)
+    val onLoad = mutableStateOf(false)
 
 
-    init {
-        onTriggerEvent(CharListEvent.NewSearchEvent)
-    }
-
-    fun onTriggerEvent(event: CharListEvent) {
+    fun onTriggerEvent(event: CharDetailEvent) {
         viewModelScope.launch {
             try {
                 when (event) {
-                    is CharListEvent.NewSearchEvent -> {
-                        newSearch()
+                    is CharDetailEvent.getCharEvent -> {
+                        if (charInfo.value == null)
+                            getChar(event.id)
                     }
                 }
             } catch (e: Exception) {
@@ -55,37 +49,23 @@ constructor(
         }
     }
 
-    private fun newSearch() {
-        Log.d(TAG, "newSearch: query: ${query.value}, page: ${page.value}")
-        // New search. Reset the state
-        resetSearchState()
-
-        repo.getChars(
-            page = page.value,
-            query = query.value
+    private fun getChar(charId : Int) {
+        resetCharInfo()
+        repo.getChar(
+            charId = charId
         ).onEach { dataState ->
             loading.value = dataState.loading
-
             dataState.data?.let { list ->
-                charsList.value = list
+                charInfo.value = list
             }
-
             dataState.error?.let { error ->
-                Log.e(TAG, "newSearch: ${error}")
+                Log.e(TAG, "getChar: ${error}")
             }
         }.launchIn(viewModelScope)
     }
 
-    private fun resetSearchState() {
-        charsList.value = listOf()
-        page.value = 1
-    }
-    fun onQueryChanged(query: String) {
-        setQuery(query)
-    }
-    private fun setQuery(query: String) {
-        this.query.value = query
-        savedStateHandle.set(STATE_KEY_QUERY, query)
+    private fun resetCharInfo() {
+        charInfo.value = null
     }
 
 }
