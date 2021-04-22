@@ -32,7 +32,7 @@ fun CharCard(
             .fillMaxWidth()
             .height(140.dp)
             .clickable(onClick = {
-                navControllerNavigate(Screen.CharDetail.route + "/${char.id}"){}
+                navControllerNavigate(Screen.CharDetail.route + "/${char.id}") {}
             }),
         elevation = 5.dp,
     ) {

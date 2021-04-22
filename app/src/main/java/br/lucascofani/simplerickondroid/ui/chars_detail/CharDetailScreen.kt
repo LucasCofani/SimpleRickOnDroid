@@ -2,9 +2,9 @@ package br.lucascofani.simplerickondroid.ui.chars_detail
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavOptionsBuilder
+import br.lucascofani.simplerickondroid.ui.components.CharDetailCard
 import br.lucascofani.simplerickondroid.ui.components.TopBarTitle
 import br.lucascofani.simplerickondroid.ui.theme.AppTheme
 import br.lucascofani.simplerickondroid.util.Themes
@@ -23,6 +23,7 @@ fun CharDetailScreen(
 ) {
     if (charId != null) {
         val onLoad = viewModel.onLoad.value
+
         //only trigger once
         if (!onLoad) {
             viewModel.onLoad.value = true
@@ -38,13 +39,14 @@ fun CharDetailScreen(
             navStart = navStart,
             currentRoute = currentRoute,
             headerContent = {
-                TopBarTitle(text = "Characters")
+                charInfo?.let { char ->
+                    TopBarTitle(text = char.name)
+                } ?: TopBarTitle(text = "Character")
             },
             content = {
                 charInfo?.let { char ->
-                    Text(text = char.name)
-                } ?: Text(text = "Loading...")
-
+                    CharDetailCard(char = char)
+                }
             },
             bottomBar = false
         )
